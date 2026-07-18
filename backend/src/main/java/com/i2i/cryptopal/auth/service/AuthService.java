@@ -1,5 +1,6 @@
 package com.i2i.cryptopal.auth.service;
 
+import com.i2i.cryptopal.analytics.service.UserSearchIndexer;
 import com.i2i.cryptopal.auth.dto.LoginRequest;
 import com.i2i.cryptopal.auth.dto.LoginResponse;
 import com.i2i.cryptopal.auth.dto.RegisterRequest;
@@ -29,16 +30,19 @@ public class AuthService {
     private final AppUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final SessionService sessionService;
+    private final UserSearchIndexer userSearchIndexer;
     private final SecureRandom secureRandom = new SecureRandom();
 
     public AuthService(
         AppUserRepository userRepository,
         PasswordEncoder passwordEncoder,
-        SessionService sessionService
+        SessionService sessionService,
+        UserSearchIndexer userSearchIndexer
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.sessionService = sessionService;
+        this.userSearchIndexer = userSearchIndexer;
     }
 
     @Transactional
@@ -71,6 +75,8 @@ public class AuthService {
         user.setWallet(wallet);
 
         AppUser savedUser = userRepository.save(user);
+        userSearchIndexer.index(savedUser);
+        userSearchIndexer.index(savedUser);
 
         return new RegisterResponse(
             savedUser.getId(),

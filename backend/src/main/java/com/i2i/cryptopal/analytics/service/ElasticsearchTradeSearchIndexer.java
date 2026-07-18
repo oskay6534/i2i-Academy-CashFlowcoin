@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.time.ZoneId;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -46,7 +47,7 @@ public class ElasticsearchTradeSearchIndexer implements TradeSearchIndexer {
             document.put("quantity", transaction.getQuantity());
             document.put("executionPrice", transaction.getExecutionPrice());
             document.put("totalAmount", transaction.getTotalAmount());
-            document.put("createdAt", transaction.getCreatedAt().toString());
+            document.put("createdAt", transaction.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant().toString());
 
             restClient.put()
                 .uri("/{index}/_doc/{id}", INDEX_NAME, transaction.getId())

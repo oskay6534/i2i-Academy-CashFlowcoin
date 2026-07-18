@@ -1,5 +1,6 @@
 package com.i2i.cryptopal.market.service;
 
+import com.i2i.cryptopal.analytics.service.MarketPriceSearchIndexer;
 import com.i2i.cryptopal.market.entity.PriceHistory;
 import com.i2i.cryptopal.market.repository.PriceHistoryRepository;
 
@@ -41,15 +42,18 @@ public class MarketService {
     private final StringRedisTemplate redisTemplate;
     private final PriceHistoryRepository historyRepository;
     private final MarketDataProvider marketDataProvider;
+    private final MarketPriceSearchIndexer marketPriceSearchIndexer;
 
     public MarketService(
         StringRedisTemplate redisTemplate,
         PriceHistoryRepository historyRepository,
-        MarketDataProvider marketDataProvider
+        MarketDataProvider marketDataProvider,
+        MarketPriceSearchIndexer marketPriceSearchIndexer
     ) {
         this.redisTemplate = redisTemplate;
         this.historyRepository = historyRepository;
         this.marketDataProvider = marketDataProvider;
+        this.marketPriceSearchIndexer = marketPriceSearchIndexer;
     }
 
     @Scheduled(
@@ -71,6 +75,7 @@ public class MarketService {
         nextPrices.forEach((symbol, price) ->
             writePrice(symbol, price, updatedAt)
         );
+        marketPriceSearchIndexer.index(getLatestPrices());
     }
 
     @Scheduled(
