@@ -6,6 +6,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Order(2)
@@ -24,6 +25,7 @@ public class ElasticsearchTradeBackfill implements ApplicationRunner {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void run(ApplicationArguments arguments) {
         transactionRepository.findAll().forEach(tradeSearchIndexer::index);
     }
