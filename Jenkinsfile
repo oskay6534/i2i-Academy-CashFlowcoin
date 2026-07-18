@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     parameters {
+        booleanParam(name: 'START_DEPENDENCIES', defaultValue: false, description: 'Start PostgreSQL and Redis only on an isolated CI agent. Leave disabled when local Docker services are already running.')
         booleanParam(name: 'RUN_SELENIUM', defaultValue: false, description: 'Run browser tests against a running application.')
         string(name: 'APP_URL', defaultValue: 'http://localhost:5173', description: 'Frontend URL for Selenium tests.')
         string(name: 'SELENIUM_GRID_URL', defaultValue: 'http://localhost:4444/wd/hub', description: 'Selenium Grid URL.')
@@ -18,7 +19,20 @@ pipeline {
     }
     // stages
     stages {
+        stage('Validate Docker Compose') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'docker compose config -q'
+                    } else {
+                        bat 'docker compose config -q'
+                    }
+                }
+            }
+        }
+
         stage('Start dependencies') {
+            when { expression { return params.START_DEPENDENCIES } }
             steps {
                 script {
                     if (isUnix()) {
@@ -77,10 +91,12 @@ pipeline {
             junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
             archiveArtifacts artifacts: 'frontend/dist/**', allowEmptyArchive: true
             script {
-                if (isUnix()) {
-                    sh 'docker compose down'
-                } else {
-                    bat 'docker compose down'
+                if (params.START_DEPENDENCIES) {
+                    if (isUnix()) {
+                        sh 'docker compose down'
+                    } else {
+                        bat 'docker compose down'
+                    }
                 }
             }
         }
