@@ -17,21 +17,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.security.SecureRandom;
 import java.util.Locale;
 import java.util.Optional;
 
 @Service
 public class AuthService {
 
-    private static final long MINIMUM_INITIAL_BALANCE = 5_000L;
-    private static final int INITIAL_BALANCE_RANGE = 15_001;
+    private static final BigDecimal INITIAL_BALANCE = BigDecimal.valueOf(50_000L).setScale(2);
 
     private final AppUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final SessionService sessionService;
     private final UserSearchIndexer userSearchIndexer;
-    private final SecureRandom secureRandom = new SecureRandom();
 
     public AuthService(
         AppUserRepository userRepository,
@@ -147,9 +144,6 @@ public class AuthService {
     }
 
     private BigDecimal generateInitialBalance() {
-        long amount = MINIMUM_INITIAL_BALANCE
-            + secureRandom.nextInt(INITIAL_BALANCE_RANGE);
-
-        return BigDecimal.valueOf(amount).setScale(2);
+        return INITIAL_BALANCE;
     }
 }
