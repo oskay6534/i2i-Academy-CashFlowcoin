@@ -7,7 +7,7 @@ pipeline {
         string(name: 'APP_URL', defaultValue: 'http://localhost:5173', description: 'Frontend URL for Selenium tests.')
         string(name: 'SELENIUM_GRID_URL', defaultValue: 'http://localhost:4444/wd/hub', description: 'Selenium Grid URL.')
     }
-    // environment
+    // environmentt
     environment {
         POSTGRES_HOST = 'localhost'
         POSTGRES_PORT = '55432'
