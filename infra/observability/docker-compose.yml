@@ -1,0 +1,54 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.4.2
+    container_name: cryptopal-elasticsearch
+    profiles: ["observability"]
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "true"
+      xpack.security.http.ssl.enabled: "false"
+      xpack.ml.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?Set ELASTIC_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:9200:9200"
+    volumes:
+      - cryptopal_elasticsearch_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS -u elastic:$$ELASTIC_PASSWORD http://localhost:9200/_cluster/health >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  elasticsearch-setup:
+    image: curlimages/curl:8.14.1
+    profiles: ["observability"]
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?Set ELASTIC_PASSWORD in .env}
+      KIBANA_PASSWORD: ${KIBANA_PASSWORD:?Set KIBANA_PASSWORD in .env}
+    command: >-
+      sh -c 'curl --fail --silent --show-error -u elastic:$$ELASTIC_PASSWORD
+      -X POST http://elasticsearch:9200/_security/user/kibana_system/_password
+      -H "Content-Type: application/json" -d "{\"password\":\"$$KIBANA_PASSWORD\"}"'
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:9.4.2
+    container_name: cryptopal-kibana
+    profiles: ["observability"]
+    restart: unless-stopped
+    depends_on:
+      elasticsearch-setup:
+        condition: service_completed_successfully
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      ELASTICSEARCH_USERNAME: kibana_system
+      ELASTICSEARCH_PASSWORD: ${KIBANA_PASSWORD:?Set KIBANA_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5601:5601"
+
+volumes:
+  cryptopal_elasticsearch_data:

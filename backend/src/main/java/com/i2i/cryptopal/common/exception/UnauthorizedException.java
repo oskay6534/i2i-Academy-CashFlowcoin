@@ -1,0 +1,7 @@
+package com.i2i.cryptopal.common.exception;
+
+public class UnauthorizedException extends RuntimeException {
+    public UnauthorizedException(String message) {
+        super(message);
+    }
+}
