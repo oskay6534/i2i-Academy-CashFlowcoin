@@ -1,3 +1,4 @@
+#our project services
 services:
   postgres:
     image: postgres:16
@@ -32,7 +33,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-
+#our volumes
 volumes:
   cryptopal_postgres_data:
   cryptopal_redis_data:
