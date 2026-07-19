@@ -193,7 +193,7 @@ export function DashboardPage() {
   useEffect(() => {
     const intervalId = window.setInterval(() => {
       void loadPrices();
-    }, 5_000);
+    }, 15_000);
 
     return () => window.clearInterval(intervalId);
   }, [loadPrices]);
