@@ -1,4 +1,5 @@
 #!/bin/sh
+# Keep this script LF-terminated: it is executed inside the Linux container.
 set -eu
 
 # Render can provide a PostgreSQL internal URL either with an explicit
