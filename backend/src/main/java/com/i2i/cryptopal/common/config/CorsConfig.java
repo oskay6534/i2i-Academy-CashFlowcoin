@@ -13,7 +13,8 @@ public class CorsConfig implements WebMvcConfigurer {
             .allowedOriginPatterns(
                 "http://localhost:5173",
                 "http://127.0.0.1:5173",
-                "https://*.onrender.com"
+                "https://*.onrender.com",
+                "https://cashflowcoin-web.vercel.app"
             )
             .allowedMethods(
                 "GET",
