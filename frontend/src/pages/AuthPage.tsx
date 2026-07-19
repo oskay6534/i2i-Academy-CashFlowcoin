@@ -82,7 +82,7 @@ export function AuthPage() {
 
     const intervalId = window.setInterval(() => {
       void loadPrices();
-    }, 15_000);
+    }, 5_000);
 
     return () => window.clearInterval(intervalId);
   }, []);
