@@ -66,6 +66,13 @@ const COINS: Record<
   BTC: { name: "Bitcoin", mark: "₿", className: "coin--btc" },
   ETH: { name: "Ethereum", mark: "Ξ", className: "coin--eth" },
   SOL: { name: "Solana", mark: "S", className: "coin--sol" },
+  BNB: { name: "BNB", mark: "B", className: "coin--bnb" },
+  XRP: { name: "XRP", mark: "X", className: "coin--xrp" },
+  ADA: { name: "Cardano", mark: "A", className: "coin--ada" },
+  DOGE: { name: "Dogecoin", mark: "D", className: "coin--doge" },
+  AVAX: { name: "Avalanche", mark: "A", className: "coin--avax" },
+  DOT: { name: "Polkadot", mark: "D", className: "coin--dot" },
+  LINK: { name: "Chainlink", mark: "L", className: "coin--link" },
 };
 
 const QUICK_PROMPTS = [

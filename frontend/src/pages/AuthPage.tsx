@@ -28,6 +28,13 @@ const COIN_NAMES: Record<string, string> = {
   BTC: "Bitcoin",
   ETH: "Ethereum",
   SOL: "Solana",
+  BNB: "BNB",
+  XRP: "XRP",
+  ADA: "Cardano",
+  DOGE: "Dogecoin",
+  AVAX: "Avalanche",
+  DOT: "Polkadot",
+  LINK: "Chainlink",
 };
 
 function formatMoney(value: number) {

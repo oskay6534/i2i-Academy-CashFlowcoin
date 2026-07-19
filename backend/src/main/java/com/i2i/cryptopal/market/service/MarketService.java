@@ -1,5 +1,6 @@
 package com.i2i.cryptopal.market.service;
 
+import com.i2i.cryptopal.analytics.service.MarketPriceSearchIndexer;
 import com.i2i.cryptopal.market.entity.PriceHistory;
 import com.i2i.cryptopal.market.repository.PriceHistoryRepository;
 
@@ -35,21 +36,31 @@ public class MarketService {
         Map.of(
             "BTC", new BigDecimal("65000.00000000"),
             "ETH", new BigDecimal("3500.00000000"),
-            "SOL", new BigDecimal("145.00000000")
+            "SOL", new BigDecimal("145.00000000"),
+            "BNB", new BigDecimal("580.00000000"),
+            "XRP", new BigDecimal("0.55000000"),
+            "ADA", new BigDecimal("0.45000000"),
+            "DOGE", new BigDecimal("0.12000000"),
+            "AVAX", new BigDecimal("32.00000000"),
+            "DOT", new BigDecimal("6.50000000"),
+            "LINK", new BigDecimal("14.00000000")
         );
 
     private final StringRedisTemplate redisTemplate;
     private final PriceHistoryRepository historyRepository;
     private final MarketDataProvider marketDataProvider;
+    private final MarketPriceSearchIndexer marketPriceSearchIndexer;
 
     public MarketService(
         StringRedisTemplate redisTemplate,
         PriceHistoryRepository historyRepository,
-        MarketDataProvider marketDataProvider
+        MarketDataProvider marketDataProvider,
+        MarketPriceSearchIndexer marketPriceSearchIndexer
     ) {
         this.redisTemplate = redisTemplate;
         this.historyRepository = historyRepository;
         this.marketDataProvider = marketDataProvider;
+        this.marketPriceSearchIndexer = marketPriceSearchIndexer;
     }
 
     @Scheduled(
@@ -71,6 +82,7 @@ public class MarketService {
         nextPrices.forEach((symbol, price) ->
             writePrice(symbol, price, updatedAt)
         );
+        marketPriceSearchIndexer.index(getLatestPrices());
     }
 
     @Scheduled(

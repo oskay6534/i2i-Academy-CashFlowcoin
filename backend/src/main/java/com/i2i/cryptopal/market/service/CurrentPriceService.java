@@ -17,7 +17,10 @@ public class CurrentPriceService {
     private static final String PRICE_PREFIX = "price:";
     private static final String VALUE_FIELD = "value";
     private static final Set<String> SUPPORTED_SYMBOLS =
-        Set.of("BTC", "ETH", "SOL");
+        Set.of(
+            "BTC", "ETH", "SOL", "BNB", "XRP", "ADA", "DOGE",
+            "AVAX", "DOT", "LINK"
+        );
 
     private final StringRedisTemplate redisTemplate;
 

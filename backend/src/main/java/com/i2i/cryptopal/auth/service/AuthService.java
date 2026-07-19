@@ -1,5 +1,6 @@
 package com.i2i.cryptopal.auth.service;
 
+import com.i2i.cryptopal.analytics.service.UserSearchIndexer;
 import com.i2i.cryptopal.auth.dto.LoginRequest;
 import com.i2i.cryptopal.auth.dto.LoginResponse;
 import com.i2i.cryptopal.auth.dto.RegisterRequest;
@@ -16,29 +17,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.security.SecureRandom;
 import java.util.Locale;
 import java.util.Optional;
 
 @Service
 public class AuthService {
 
-    private static final long MINIMUM_INITIAL_BALANCE = 5_000L;
-    private static final int INITIAL_BALANCE_RANGE = 15_001;
+    private static final BigDecimal INITIAL_BALANCE = BigDecimal.valueOf(50_000L).setScale(2);
 
     private final AppUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final SessionService sessionService;
-    private final SecureRandom secureRandom = new SecureRandom();
+    private final UserSearchIndexer userSearchIndexer;
 
     public AuthService(
         AppUserRepository userRepository,
         PasswordEncoder passwordEncoder,
-        SessionService sessionService
+        SessionService sessionService,
+        UserSearchIndexer userSearchIndexer
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.sessionService = sessionService;
+        this.userSearchIndexer = userSearchIndexer;
     }
 
     @Transactional
@@ -71,6 +72,8 @@ public class AuthService {
         user.setWallet(wallet);
 
         AppUser savedUser = userRepository.save(user);
+        userSearchIndexer.index(savedUser);
+        userSearchIndexer.index(savedUser);
 
         return new RegisterResponse(
             savedUser.getId(),
@@ -141,9 +144,6 @@ public class AuthService {
     }
 
     private BigDecimal generateInitialBalance() {
-        long amount = MINIMUM_INITIAL_BALANCE
-            + secureRandom.nextInt(INITIAL_BALANCE_RANGE);
-
-        return BigDecimal.valueOf(amount).setScale(2);
+        return INITIAL_BALANCE;
     }
 }
