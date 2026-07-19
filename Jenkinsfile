@@ -7,7 +7,7 @@ pipeline {
         string(name: 'APP_URL', defaultValue: 'http://localhost:5173', description: 'Frontend URL for Selenium tests.')
         string(name: 'SELENIUM_GRID_URL', defaultValue: 'http://localhost:4444/wd/hub', description: 'Selenium Grid URL.')
     }
-
+    // environmentt
     environment {
         POSTGRES_HOST = 'localhost'
         POSTGRES_PORT = '55432'
@@ -17,7 +17,7 @@ pipeline {
         REDIS_HOST = 'localhost'
         REDIS_PORT = '6379'
     }
-
+    // stages
     stages {
         stage('Validate Docker Compose') {
             steps {
