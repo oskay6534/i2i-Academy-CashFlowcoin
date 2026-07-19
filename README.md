@@ -272,7 +272,7 @@ Backend'de DATABASE_URL, database credentials, REDIS_HOST, REDIS_PORT, REDIS_PAS
 Bu proje üç kişilik ekip çalışmasıyla geliştirilmiştir.
 
 - Mustafa Oskay: frontend, test otomasyonu, Elasticsearch/Kibana, AI arayüzü ve deployment entegrasyonu
-- Ali: Spring Boot backend, REST API, veri modeli, Flyway ve al-sat iş kuralları
-- Berke: Docker, Jenkins CI/CD pipeline ve DevOps yapılandırması
+- Ali Koçer: Spring Boot backend, REST API, veri modeli, Flyway ve al-sat iş kuralları
+- Berke Odabaş: Docker, Jenkins CI/CD pipeline ve DevOps yapılandırması
 
 Tüm ekip üyelerine katkılarından dolayı teşekkür ederiz.
