@@ -25,7 +25,10 @@ import java.util.Set;
 public class AiContextService {
 
     private static final Set<String> SUPPORTED_SYMBOLS =
-        Set.of("BTC", "ETH", "SOL");
+        Set.of(
+            "BTC", "ETH", "SOL", "BNB", "XRP", "ADA", "DOGE",
+            "AVAX", "DOT", "LINK"
+        );
 
     private final AppUserRepository userRepository;
     private final WalletRepository walletRepository;
