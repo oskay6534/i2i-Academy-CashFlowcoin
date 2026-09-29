@@ -82,7 +82,7 @@ export function AuthPage() {
 
     const intervalId = window.setInterval(() => {
       void loadPrices();
-    }, 15_000);
+    }, 5_000);
 
     return () => window.clearInterval(intervalId);
   }, []);
@@ -160,7 +160,7 @@ export function AuthPage() {
               </div>
               <span>
                 <strong>Canlı piyasa</strong>
-                15 saniyede bir yenilenen fiyat akışı
+                5 saniyede bir yenilenen fiyat akışı
               </span>
             </article>
 

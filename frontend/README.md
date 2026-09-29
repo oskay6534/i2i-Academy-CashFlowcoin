@@ -22,7 +22,7 @@ Vite geliştirme sunucusu `/api` isteklerini otomatik olarak backend'e yönlendi
 
 - Kayıt ve giriş ekranı
 - Redis session token entegrasyonu
-- 15 saniyelik canlı fiyat polling
+- 5 saniyelik canlı fiyat polling
 - BTC, ETH ve SOL piyasa görünümü
 - Fiyat geçmişi grafiği
 - Alış / satış modalı

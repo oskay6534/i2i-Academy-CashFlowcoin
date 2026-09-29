@@ -193,7 +193,7 @@ export function DashboardPage() {
   useEffect(() => {
     const intervalId = window.setInterval(() => {
       void loadPrices();
-    }, 15_000);
+    }, 5_000);
 
     return () => window.clearInterval(intervalId);
   }, [loadPrices]);
@@ -418,7 +418,7 @@ export function DashboardPage() {
             Sistem aktif
           </div>
           <p>
-            Fiyatlar otomatik olarak 15 saniyede bir yenileniyor.
+            Fiyatlar otomatik olarak 5 saniyede bir yenileniyor.
           </p>
           <div className="sidebar-live-card__meter">
             <span />
