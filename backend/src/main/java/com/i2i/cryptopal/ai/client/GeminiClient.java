@@ -20,6 +20,8 @@ import java.util.Map;
 @Component
 public class GeminiClient {
 
+    private static final int MAX_TRANSIENT_RETRIES = 2;
+
     private static final Logger log =
         LoggerFactory.getLogger(GeminiClient.class);
 
@@ -86,14 +88,7 @@ public class GeminiClient {
         request.put("input", prompt);
 
         try {
-            JsonNode response = restClient.post()
-                .uri("/v1beta/interactions")
-                .header("x-goog-api-key", apiKey)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .body(request)
-                .retrieve()
-                .body(JsonNode.class);
+            JsonNode response = requestWithTransientRetry(request);
 
             String answer = extractAnswer(response);
 
@@ -160,6 +155,46 @@ public class GeminiClient {
 
     public String getModel() {
         return model;
+    }
+
+    private JsonNode requestWithTransientRetry(Map<String, Object> request) {
+        for (int attempt = 0; ; attempt++) {
+            try {
+                return restClient.post()
+                    .uri("/v1beta/interactions")
+                    .header("x-goog-api-key", apiKey)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .body(request)
+                    .retrieve()
+                    .body(JsonNode.class);
+            } catch (RestClientResponseException exception) {
+                boolean isTransientServiceFailure =
+                    exception.getStatusCode().value() == 503;
+
+                if (!isTransientServiceFailure || attempt >= MAX_TRANSIENT_RETRIES) {
+                    throw exception;
+                }
+
+                long delayMillis = 750L * (attempt + 1);
+                log.warn(
+                    "Gemini is temporarily unavailable; retrying in {} ms (attempt {}/{})",
+                    delayMillis,
+                    attempt + 1,
+                    MAX_TRANSIENT_RETRIES
+                );
+
+                try {
+                    Thread.sleep(delayMillis);
+                } catch (InterruptedException interruptedException) {
+                    Thread.currentThread().interrupt();
+                    throw new AiServiceUnavailableException(
+                        "Gemini request was interrupted",
+                        interruptedException
+                    );
+                }
+            }
+        }
     }
 
     private String extractAnswer(JsonNode response) {

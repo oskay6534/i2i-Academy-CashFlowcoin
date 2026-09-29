@@ -132,7 +132,7 @@ export function DashboardPage() {
       id: "welcome",
       role: "assistant",
       text:
-        "Merhaba! Ben **AkÄ±llÄ± Analiz**. Bakiyeniz, portföyünüz, işlemleriniz ve mevcut piyasa verileri hakkında sorularınızı yanıtlayabilirim.",
+        "Merhaba! Ben **Akıllı Analiz**. Bakiyeniz, portföyünüz, işlemleriniz ve mevcut piyasa verileri hakkında sorularınızı yanıtlayabilirim.",
     },
   ]);
   const [question, setQuestion] = useState("");
@@ -407,7 +407,7 @@ export function DashboardPage() {
           </button>
           <button onClick={() => scrollToSection("ai")}>
             <MessageSquareText size={19} />
-            AkÄ±llÄ± Analiz
+            Akıllı Analiz
             <span className="nav-badge">Analiz</span>
           </button>
         </nav>
@@ -940,10 +940,10 @@ export function DashboardPage() {
               <div className="ai-preview-panel__icon">
                 <Sparkles size={24} />
               </div>
-              <span className="eyebrow">Veriye dayalÄ±</span>
+              <span className="eyebrow">Veriye dayalı</span>
               <h2>Portföyünüzü birlikte yorumlayalım.</h2>
               <p>
-                AkÄ±llÄ± Analiz, hesabınızdaki gerçek bakiye, varlık ve
+                Akıllı Analiz, hesabınızdaki gerçek bakiye, varlık ve
                 işlem verilerini kullanarak size anlaşılır bir özet
                 sunar.
               </p>
@@ -952,7 +952,7 @@ export function DashboardPage() {
                 type="button"
                 onClick={() => scrollToSection("ai")}
               >
-                Analizi aÃ§
+                Analizi aç
                 <ArrowRight size={17} />
               </button>
             </article>
@@ -1049,7 +1049,7 @@ export function DashboardPage() {
             <div className="ai-section__intro">
               <span className="ai-kicker">
                 <Bot size={18} />
-                AkÄ±llÄ± Analiz
+                Akıllı Analiz
               </span>
               <h2>Verilerinize özel akıllı asistan.</h2>
               <p>
@@ -1069,10 +1069,10 @@ export function DashboardPage() {
                   <Bot size={21} />
                 </div>
                 <div>
-                  <strong>AkÄ±llÄ± Analiz</strong>
+                  <strong>Akıllı Analiz</strong>
                   <span>
                     <span className="live-dot live-dot--small" />
-                    Çevrimiçi · Hesap verileriyle Ã§alÄ±ÅŸÄ±r
+                    Çevrimiçi · Hesap verileriyle çalışır
                   </span>
                 </div>
               </header>
@@ -1136,7 +1136,7 @@ export function DashboardPage() {
                 <textarea
                   rows={1}
                   maxLength={1000}
-                  placeholder="AkÄ±llÄ± Analiz'a bir soru sorun..."
+                  placeholder="Akıllı Analiz'e bir soru sorun..."
                   value={question}
                   onChange={(event) => setQuestion(event.target.value)}
                   onKeyDown={(event) => {
