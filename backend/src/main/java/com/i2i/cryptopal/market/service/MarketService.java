@@ -64,7 +64,7 @@ public class MarketService {
     }
 
     @Scheduled(
-        fixedRate = 15_000,
+        fixedRate = 5_000,
         initialDelay = 1_000
     )
     public void updateLatestPrices() {

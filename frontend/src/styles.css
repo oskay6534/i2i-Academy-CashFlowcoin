@@ -755,6 +755,64 @@ button {
   font-size: 12px;
 }
 
+.backend-wake-notice {
+  position: fixed;
+  z-index: 150;
+  right: 18px;
+  bottom: 18px;
+  width: min(380px, calc(100vw - 36px));
+  display: flex;
+  gap: 11px;
+  padding: 14px 15px;
+  border: 1px solid rgba(251, 191, 36, 0.42);
+  border-radius: 16px;
+  background: rgba(30, 24, 9, 0.96);
+  box-shadow: var(--shadow);
+  color: var(--text-soft);
+  backdrop-filter: blur(20px);
+  animation: backendWakeIn 220ms ease;
+}
+
+.backend-wake-notice__indicator {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  margin-top: 5px;
+  border-radius: 999px;
+  background: #fbbf24;
+  box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
+  animation: backendWakePulse 1.4s ease-out infinite;
+}
+
+.backend-wake-notice strong {
+  display: block;
+  color: #fde68a;
+  font-size: 12px;
+}
+
+.backend-wake-notice p {
+  margin: 4px 0 0;
+  color: #d8cba8;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+@keyframes backendWakeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes backendWakePulse {
+  70% {
+    box-shadow: 0 0 0 8px rgba(251, 191, 36, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0);
+  }
+}
+
 @keyframes loadingBar {
   from {
     transform: translateX(-20%);

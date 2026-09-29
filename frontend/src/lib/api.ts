@@ -110,7 +110,33 @@ async function request<T>(
   return (await response.json()) as T;
 }
 
+async function isBackendReady(): Promise<boolean> {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), 12_000);
+
+  try {
+    const response = await fetch(`${API_BASE}/actuator/health`, {
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      return false;
+    }
+
+    const payload = (await response.json()) as { status?: string };
+    return payload.status === "UP";
+  } catch {
+    return false;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
+
 export const api = {
+  system: {
+    isBackendReady,
+  },
+
   auth: {
     login: (identifier: string, password: string) =>
       request<LoginResponse>("/api/auth/login", {
