@@ -113,8 +113,19 @@ async function request<T>(
 export const api = {
   system: {
     isBackendReady: async () => {
-      await request<MarketPrice[]>("/api/market/prices");
-      return true;
+      try {
+        // Bu uç nokta Redis, veritabanı ve uygulama katmanını kullandığı için
+        // yalnızca HTTP sunucusunun değil, işlem yapılabilir backend'in de
+        // hazır olduğunu doğrular.
+        await request<MarketPrice[]>("/api/market/prices");
+        return true;
+      } catch {
+        // Render'ın uyku modundan dönüşünde ilk istek zaman aşımına uğrayabilir.
+        // Hata dışarı taşarsa App.tsx içindeki yeniden deneme zamanlayıcısı
+        // kurulamaz ve "Backend hazırlanıyor" kartı kalıcı olarak görünür.
+        // Burada false dönerek denetimin beş saniye sonra sürmesini sağlıyoruz.
+        return false;
+      }
     },
   },
 
