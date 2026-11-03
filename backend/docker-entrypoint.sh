@@ -2,10 +2,12 @@
 # Keep this script LF-terminated: it is executed inside the Linux container.
 set -eu
 
-# Render can provide a PostgreSQL internal URL either with an explicit
-# port or without one. PostgreSQL uses 5432 when the port is omitted.
+# Render returns the database URL as postgresql://user:password@host/db.
+# Use the *last* '@' delimiter: a generated password can itself contain '@'.
+# The former ${DATABASE_URL#*@} form stopped at the first '@', producing an
+# invalid host and leaving Hibernate without JDBC metadata at startup.
 if [ -n "${DATABASE_URL:-}" ]; then
-  DB_ADDRESS="${DATABASE_URL#*@}"
+  DB_ADDRESS="${DATABASE_URL##*@}"
   DB_HOSTPORT="${DB_ADDRESS%%/*}"
   DB_DATABASE="${DB_ADDRESS#*/}"
 
