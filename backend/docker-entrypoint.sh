@@ -6,7 +6,7 @@ set -eu
 # Use the *last* '@' delimiter: a generated password can itself contain '@'.
 # The former ${DATABASE_URL#*@} form stopped at the first '@', producing an
 # invalid host and leaving Hibernate without JDBC metadata at startup.
-if [ -n "${DATABASE_URL:-}" ]; then
+if [ -z "${SPRING_DATASOURCE_URL:-}" ] && [ -n "${DATABASE_URL:-}" ]; then
   DB_ADDRESS="${DATABASE_URL##*@}"
   DB_HOSTPORT="${DB_ADDRESS%%/*}"
   DB_DATABASE="${DB_ADDRESS#*/}"
