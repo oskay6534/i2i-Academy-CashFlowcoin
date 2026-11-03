@@ -6,10 +6,12 @@ spring:
     name: cryptopal-core
 
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    # Render supplies SPRING_DATASOURCE_* at runtime. Reading these values
+    # directly prevents an unresolved legacy POSTGRES_HOST template from
+    # blocking application startup.
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:cryptopal}}
+    username: ${SPRING_DATASOURCE_USERNAME:${POSTGRES_USER:cryptopal}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${POSTGRES_PASSWORD:cryptopal}}
 
   jpa:
     hibernate:
